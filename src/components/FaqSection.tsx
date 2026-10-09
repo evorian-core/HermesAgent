@@ -1,67 +1,83 @@
-import React, { useState } from 'react';
-import { FAQS } from '../constants/data';
-import { ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { FAQS } from "../constants/data";
+import { SectionHeading } from "./SectionHeading";
 
-export const FaqSection: React.FC = () => {
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export function FaqSection() {
+  const reduce = useReducedMotion();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const toggle = (idx: number) => {
-    setOpenIndex(openIndex === idx ? null : idx);
-  };
+  const toggle = (idx: number) => setOpenIndex((cur) => (cur === idx ? null : idx));
 
   return (
-    <section id="faq" className="relative py-32 sm:py-40 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05] bg-[#07070a]">
+    <section
+      id="faq"
+      className="relative border-t border-white/[0.05] bg-[#07070a] px-4 py-28 sm:px-6 lg:px-8 lg:py-36"
+    >
       <div className="mx-auto max-w-4xl">
-        
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="inline-block font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-5">
-            DÚVIDAS FREQUENTES
-          </div>
+        <SectionHeading
+          align="center"
+          eyebrow="Dúvidas frequentes"
+          title="Perguntas & Respostas."
+          intro="Entenda como o HERMES opera, como é implementado e qual o impacto na rotina da sua equipe."
+        />
 
-          <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-white mb-6">
-            Perguntas & Respostas.
-          </h2>
-
-          <p className="text-base sm:text-lg text-zinc-400 font-light max-w-xl mx-auto">
-            Entenda como o HERMES opera, como é implementado e qual o impacto direto na rotina da sua equipe.
-          </p>
-        </div>
-
-        {/* Accordion List */}
-        <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+        <div className="mt-14 divide-y divide-white/[0.08] border-y border-white/[0.08]">
           {FAQS.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div key={idx} className="py-6 sm:py-8 transition-colors">
-                <button
-                  onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between text-left gap-6 group focus:outline-none"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-display text-lg sm:text-xl font-medium text-white group-hover:text-zinc-300 transition-colors">
-                    {faq.question}
-                  </span>
-                  <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center shrink-0 transition-transform duration-300 ${
-                    isOpen ? 'rotate-180 bg-white text-black border-white' : 'bg-white/[0.02] text-zinc-400'
-                  }`}>
-                    <ChevronDown className="w-4 h-4" />
-                  </div>
-                </button>
+              <div key={faq.question}>
+                <h3>
+                  <button
+                    type="button"
+                    id={`faq-button-${idx}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${idx}`}
+                    onClick={() => toggle(idx)}
+                    className="group flex w-full items-center justify-between gap-6 py-5 text-left"
+                  >
+                    <span className="font-display text-lg font-medium text-white transition-colors group-hover:text-zinc-300 sm:text-xl">
+                      {faq.question}
+                    </span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 ${
+                        isOpen
+                          ? "rotate-180 border-white bg-white text-black"
+                          : "border-white/10 bg-white/[0.02] text-zinc-400"
+                      }`}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </h3>
 
-                {isOpen && (
-                  <div className="pt-4 pr-12 animate-in fade-in slide-in-from-top-1 duration-200">
-                    <p className="text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="panel"
+                      id={`faq-panel-${idx}`}
+                      role="region"
+                      aria-labelledby={`faq-button-${idx}`}
+                      initial={reduce ? false : { height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                      transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
+                      className="overflow-hidden"
+                    >
+                      <p className="pr-12 pb-6 text-sm font-light leading-relaxed text-zinc-400 sm:text-base">
+                        {faq.answer}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}
         </div>
-
       </div>
     </section>
   );
-};
+}

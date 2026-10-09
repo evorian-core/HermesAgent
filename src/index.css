@@ -1,17 +1,27 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
+  --color-ink: #050507;
+  --color-ink-2: #0a0a0d;
+  --color-panel: #0f1117;
+  --color-panel-2: #161820;
+  --color-metal: #9aa0aa;
+  --color-wa: #25d366;
+  --color-wa-deep: #1eb655;
+}
+
+@layer base {
   html {
-    font-family: var(--font-sans);
-    scroll-behavior: smooth;
     background-color: #050507;
     color: #ededed;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   body {
@@ -24,73 +34,89 @@
     background: #ffffff;
     color: #000000;
   }
+
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.65);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
-/* Custom font utilities */
+/* ---------- Composição tipográfica ---------- */
 .font-display {
   font-family: var(--font-display);
 }
-
 .font-mono {
   font-family: var(--font-mono);
 }
-
-/* Subtle architectural grid pattern */
-.bg-grid-subtle {
-  background-size: 48px 48px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
 }
 
-.bg-radial-gradient {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+/* Gradiente metálico sutil para acentos de destaque */
+.text-metallic {
+  background: linear-gradient(180deg, #ffffff 0%, #e6e7ea 42%, #9aa0aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.bg-spotlight {
-  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.04) 0%, rgba(5, 5, 7, 0) 60%);
-}
-
-.glass-panel {
-  background: rgba(14, 15, 18, 0.65);
+/* ---------- Superfícies e profundidade ---------- */
+.surface {
+  background: rgba(15, 17, 23, 0.66);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.surface-solid {
+  background: linear-gradient(180deg, rgba(22, 24, 32, 0.9) 0%, rgba(10, 10, 13, 0.9) 100%);
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Grade arquitetônica discreta */
+.bg-grid-subtle {
+  background-size: 72px 72px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
 }
 
-.glass-panel-hover:hover {
-  background: rgba(18, 19, 24, 0.85);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(255, 255, 255, 0.03);
+/* Fio de luz / divisória metálica */
+.hairline {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.14), transparent);
 }
 
-/* Custom minimalist scrollbar */
+/* ---------- Barra de rolagem ---------- */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 9px;
 }
-
 ::-webkit-scrollbar-track {
   background: #050507;
 }
-
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.22);
 }
 
+/* ---------- Movimento reduzido ---------- */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }
+
