@@ -3,8 +3,8 @@ import { cx } from "../lib/cx";
 /**
  * Marca oficial do HERMES.
  * Usa exclusivamente os assets oficiais preservados:
- *  - /hermes-icon.png  (isotipo geométrico)
- *  - /hermes-logo.png  (logotipo horizontal)
+ *  - /hermes-icon-transparent.png  (isotipo geométrico)
+ *  - /hermes-logo-transparent.png  (logotipo horizontal)
  * Nunca redesenha nem distorce o símbolo.
  */
 type LogoVariant = "mark" | "wordmark" | "lockup";
@@ -27,7 +27,7 @@ export function Logo({
   if (variant === "mark") {
     return (
       <img
-        src="/hermes-icon.png"
+        src="/hermes-icon-transparent.png"
         alt={title}
         className={cx("object-contain", iconClassName ?? "h-8 w-8", className)}
         draggable={false}
@@ -38,7 +38,7 @@ export function Logo({
   if (variant === "wordmark") {
     return (
       <img
-        src="/hermes-logo.png"
+        src="/hermes-logo-transparent.png"
         alt={title}
         className={cx("object-contain", wordmarkClassName ?? "h-6", className)}
         draggable={false}
@@ -49,14 +49,14 @@ export function Logo({
   return (
     <span className={cx("inline-flex items-center gap-2.5", className)}>
       <img
-        src="/hermes-icon.png"
+        src="/hermes-icon-transparent.png"
         alt=""
         aria-hidden="true"
         className={cx("object-contain", iconClassName ?? "h-7 w-7")}
         draggable={false}
       />
       <img
-        src="/hermes-logo.png"
+        src="/hermes-logo-transparent.png"
         alt={title}
         className={cx("object-contain", wordmarkClassName ?? "h-5")}
         draggable={false}
